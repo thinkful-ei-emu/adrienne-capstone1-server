@@ -34,13 +34,6 @@ const UsersService = {
   },
   hashPassword(password) {
     return bcrypt.hash(password, 12);
-  },
-  serializeUser(user) {
-    return {
-      id: user.id,
-      username: xss(user.username),
-      date_created: new Date(user.date_created)
-    };
   }
 };
 

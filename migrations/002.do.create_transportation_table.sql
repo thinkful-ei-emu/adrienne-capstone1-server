@@ -5,5 +5,5 @@ CREATE TABLE transportation (
   transport_location TEXT NOT NULL,
   destination TEXT NOT NULL,
   transport_type TEXT NOT NULL,
-  transport_number TEXT NOT NULL --have as text not number, because might be a combination of letters and numbers
+  transport_number TEXT NOT NULL
 );

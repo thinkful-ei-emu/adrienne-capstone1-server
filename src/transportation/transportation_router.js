@@ -1,15 +1,16 @@
 const express = require('express');
 const path = require('path');
 const TransportationService = require('./transportation_service');
+const xss = require('xss');
 
 const serializeItem = item => ({
   id: item.id,
-  transport_date: item.transport_date,
-  transport_time: item.transport_time,
-  transport_location: item.transport_location,
-  destination: item.destination,
-  transport_type: item.transport_type,
-  transport_number: item.transport_number
+  transport_date: xss(item.transport_date),
+  transport_time: xss(item.transport_time),
+  transport_location: xss(item.transport_location),
+  destination: xss(item.destination),
+  transport_type: xss(item.transport_type),
+  transport_number: xss(item.transport_number)
 });
 
 const transportationRouter = express.Router();

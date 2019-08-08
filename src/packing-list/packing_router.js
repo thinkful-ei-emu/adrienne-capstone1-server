@@ -1,13 +1,14 @@
 const express = require('express');
 const path = require('path');
 const PackingService = require('./packing_service');
+const xss = require('xss');
 
 const packingRouter = express.Router();
 const jsonBodyParser = express.json();
 
 const serializeItem = item => ({
   id: item.id,
-  item: item.item
+  item: xss(item.item)
 });
 
 packingRouter

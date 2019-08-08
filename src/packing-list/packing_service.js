@@ -9,7 +9,6 @@ const PackingService = {
       .into('packing_list')
       .returning('*')
       .then(rows => {
-        console.log(rows);
         return rows[0];
       });
   },
