@@ -3,7 +3,6 @@ const PackingService = {
     return knex.select('*').from('packing_list');
   },
   insertItem(knex, newItem) {
-    console.log(newItem);
     return knex
       .insert(newItem)
       .into('packing_list')
@@ -20,10 +19,10 @@ const PackingService = {
       .where({ id })
       .delete();
   },
-  updateItem(knex, id, newItemName) {
+  updateItem(knex, id, item) {
     return knex('packing_list')
       .where({ id })
-      .update(newItemName);
+      .update(item);
   }
 };
 

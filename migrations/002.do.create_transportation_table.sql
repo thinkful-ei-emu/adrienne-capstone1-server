@@ -5,5 +5,6 @@ CREATE TABLE transportation (
   transport_location TEXT NOT NULL,
   destination TEXT NOT NULL,
   transport_type TEXT NOT NULL,
-  transport_number TEXT NOT NULL
+  transport_number TEXT NOT NULL,
+  date_created TIMESTAMPTZ DEFAULT now() NOT NULL
 );
