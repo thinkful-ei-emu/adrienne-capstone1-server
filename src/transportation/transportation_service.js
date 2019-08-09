@@ -1,9 +1,9 @@
 const TransportationService = {
-  getAllItems(knex) {
-    return knex.select('*').from('transportation');
+  getAllItems(knex, currentUserId) {
+    return knex.select('*').from('transportation').where('user_id', currentUserId);
   },
-  getById(knex, id) {
-    return knex.from('transportation').select('*').where('id', id).first();
+  getById(knex, id, currentUserId) {
+    return knex.from('transportation').select('*').where('id', id).andWhere('user_id', currentUserId).first();
   },
   insertItem(knex, newItem) {
     return knex
@@ -14,14 +14,17 @@ const TransportationService = {
         return rows[0];
       });
   },
-  deleteItem(knex, id) {
+  deleteItem(knex, id, currentUserId) {
     return knex('transportation')
       .where({ id })
+      .andWhere('user_id', currentUserId)
       .delete();
   },
-  updateItem(knex, id, newItemFields) {
+  updateItem(knex, id, newItemFields, currentUserId) {
+    console.log(currentUserId);
     return knex('transportation')
       .where({ id })
+      .andWhere('user_id', currentUserId)
       .update(newItemFields);
   }
 };

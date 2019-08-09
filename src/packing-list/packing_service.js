@@ -1,6 +1,6 @@
 const PackingService = {
-  getAllItems(knex) {
-    return knex.select('*').from('packing_list');
+  getAllItems(knex, currentUserId) {
+    return knex.select('*').from('packing_list').where('user_id', currentUserId);
   },
   insertItem(knex, newItem) {
     return knex
@@ -11,17 +11,19 @@ const PackingService = {
         return rows[0];
       });
   },
-  getById(knex, id) {
-    return knex.from('packing_list').select('*').where('id', id).first();
+  getById(knex, id, currentUserId) {
+    return knex.from('packing_list').select('*').where('id', id).andWhere('user_id', currentUserId).first();
   },
-  deleteItem(knex, id) {
+  deleteItem(knex, id, currentUserId) {
     return knex('packing_list')
       .where({ id })
+      .andWhere('user_id', currentUserId)
       .delete();
   },
-  updateItem(knex, id, item) {
+  updateItem(knex, id, item, currentUserId) {
     return knex('packing_list')
       .where({ id })
+      .andWhere('user_id', currentUserId)
       .update(item);
   }
 };

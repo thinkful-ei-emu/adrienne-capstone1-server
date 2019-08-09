@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const TransportationService = require('./transportation_service');
 const xss = require('xss');
+const requireAuth = require('../middleware/jwt_auth');
 
 const serializeItem = item => ({
   id: item.id,
@@ -18,8 +19,9 @@ const jsonBodyParser = express.json();
 
 transportationRouter
   .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
-    TransportationService.getAllItems(req.app.get('db'))
+    TransportationService.getAllItems(req.app.get('db'), req.user.id)
       .then(items => {
         res.json(items.map(serializeItem));
       })
@@ -27,7 +29,7 @@ transportationRouter
   })
   .post(jsonBodyParser, (req, res, next) => {
     const { transport_date, transport_time, transport_location, destination, transport_type, transport_number } = req.body;
-    const newItem = { transport_date, transport_time, transport_location, destination, transport_type, transport_number };
+    const newItem = { transport_date, transport_time, transport_location, destination, transport_type, transport_number, user_id: req.user.id };
     TransportationService.insertItem(
       req.app.get('db'),
       newItem
@@ -40,11 +42,13 @@ transportationRouter
 
 transportationRouter
   .route('/:id')
+  .all(requireAuth)
   .delete((req, res, next) => {
     const { id } = req.params;
     TransportationService.deleteItem(
       req.app.get('db'),
-      id
+      id,
+      req.user.id
     )
       .then(numRowsAffected => {
         res.status(204).end();
@@ -63,7 +67,8 @@ transportationRouter
     TransportationService.updateItem(
       req.app.get('db'),
       req.params.id,
-      itemToUpdate
+      itemToUpdate,
+      req.user.id
     )
       .then(numRowsAffected => {
         res.status(204).end();

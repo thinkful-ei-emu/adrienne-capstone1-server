@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const PackingService = require('./packing_service');
 const xss = require('xss');
+const requireAuth = require('../middleware/jwt_auth');
 
 const packingRouter = express.Router();
 const jsonBodyParser = express.json();
@@ -13,8 +14,9 @@ const serializeItem = item => ({
 
 packingRouter
   .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
-    PackingService.getAllItems(req.app.get('db'))
+    PackingService.getAllItems(req.app.get('db'), req.user.id)
       .then(items => {
         res.json(items.map(serializeItem));
       })
@@ -22,7 +24,7 @@ packingRouter
   })
   .post(jsonBodyParser, (req, res, next) => {
     const { item } = req.body;
-    const newItem = { item };
+    const newItem = { item, user_id: req.user.id };
     PackingService.insertItem(
       req.app.get('db'),
       newItem
@@ -38,11 +40,13 @@ packingRouter
 
 packingRouter
   .route('/:id')
+  .all(requireAuth)
   .delete((req, res, next) => {
     const { id } = req.params;
     PackingService.deleteItem(
       req.app.get('db'),
-      id
+      id,
+      req.user.id
     )
       .then(numRowsAffected => {
         res.status(204).end();
@@ -60,7 +64,8 @@ packingRouter
     PackingService.updateItem(
       req.app.get('db'),
       req.params.id,
-      itemToUpdate
+      itemToUpdate,
+      req.user.id
     )
       .then(numRowsAffected => {
         res.status(204).end();
