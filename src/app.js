@@ -8,6 +8,7 @@ const usersRouter = require('./users/users_router');
 const authRouter = require('./auth/auth_router');
 const packingRouter = require('./packing-list/packing_router');
 const transportationRouter = require('./transportation/transportation_router');
+const accommodationsRouter = require('./accommodations/accommodation_router');
 const app = express();
 
 const morganOption = (NODE_ENV === 'production')
@@ -22,6 +23,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/list', packingRouter);
 app.use('/api/travel', transportationRouter);
+app.use('/api/sleep', accommodationsRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
