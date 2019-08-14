@@ -2,7 +2,6 @@ const AuthService = require('../auth/auth_service');
 
 function requireAuth(req, res, next) {
   const authToken = req.get('Authorization') || '';
-  console.log(authToken);
 
   let bearerToken;
   if(!authToken.toLowerCase().startsWith('bearer ')) {
@@ -10,7 +9,6 @@ function requireAuth(req, res, next) {
   } else {
     bearerToken = authToken.slice(7, authToken.length);
   }
-  console.log(bearerToken);
 
   try {
     const payload = AuthService.verifyJwt(bearerToken);

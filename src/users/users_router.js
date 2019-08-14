@@ -11,6 +11,7 @@ const serializeUser = user => ({
   username: xss(user.username)
 });
 
+// router used for registration page
 usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {
     const { username, password } = req.body;
@@ -20,9 +21,14 @@ usersRouter
         return res.status(400).json({ error: `Missing ${field} in request body`});
 
     const passwordError = UsersService.validatePassword(password);
+    const usernameError = UsersService.validateUsername(username);
 
     if(passwordError) {
       return res.status(400).json({ error: passwordError });
+    } 
+    
+    if(usernameError) {
+      return res.status(400).json({ error: usernameError});
     }
 
     UsersService.hasUserWithUserName(

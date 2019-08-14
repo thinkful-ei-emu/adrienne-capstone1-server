@@ -25,6 +25,11 @@ const PackingService = {
       .where({ id })
       .andWhere('user_id', currentUserId)
       .update(item);
+  },
+  validateItem(item) {
+    if(item.startsWith(' ') || item.endsWith(' ')) {
+      return 'Item must not start or end with empty spaces';
+    }
   }
 };
 

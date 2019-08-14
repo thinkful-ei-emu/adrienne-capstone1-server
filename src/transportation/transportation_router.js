@@ -30,6 +30,27 @@ transportationRouter
   .post(jsonBodyParser, (req, res, next) => {
     const { transport_date, transport_time, transport_location, destination, transport_type, transport_number } = req.body;
     const newItem = { transport_date, transport_time, transport_location, destination, transport_type, transport_number, user_id: req.user.id };
+
+    const locationError = TransportationService.validateLocation(transport_location);
+    const destinationError = TransportationService.validateDestination(destination);
+    const numberError = TransportationService.validateNumber(transport_number);
+
+    
+    if(locationError) {
+      console.log(locationError);
+      return res.status(400).json({ error: locationError });
+    }
+
+    if(destinationError) {
+      console.log(destinationError);
+      return res.status(400).json({ error: destinationError});
+    }
+
+    if(numberError) {
+      console.log(numberError);
+      return res.status(400).json({ error: numberError });
+    }
+
     TransportationService.insertItem(
       req.app.get('db'),
       newItem

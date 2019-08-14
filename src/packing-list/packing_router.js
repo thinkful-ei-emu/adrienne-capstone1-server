@@ -25,6 +25,13 @@ packingRouter
   .post(jsonBodyParser, (req, res, next) => {
     const { item } = req.body;
     const newItem = { item, user_id: req.user.id };
+
+    const itemError = PackingService.validateItem(item);
+    
+    if(itemError) {
+      return res.status(400).json({ error: itemError});
+    }
+
     PackingService.insertItem(
       req.app.get('db'),
       newItem

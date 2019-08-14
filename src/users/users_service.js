@@ -32,6 +32,11 @@ const UsersService = {
     }
     return null;
   },
+  validateUsername(username) {
+    if(username.startsWith(' ') || username.endsWith(' ')){
+      return 'Username must not start or end with empty spaces';
+    }
+  },
   hashPassword(password) {
     return bcrypt.hash(password, 12);
   }
