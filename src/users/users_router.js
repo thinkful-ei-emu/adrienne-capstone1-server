@@ -8,7 +8,8 @@ const jsonBodyParser = express.json();
 
 const serializeUser = user => ({
   id: user.id,
-  username: xss(user.username)
+  username: xss(user.username),
+  date_created: new Date(user.date_created)
 });
 
 // router used for registration page

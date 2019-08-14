@@ -37,17 +37,14 @@ transportationRouter
 
     
     if(locationError) {
-      console.log(locationError);
       return res.status(400).json({ error: locationError });
     }
 
     if(destinationError) {
-      console.log(destinationError);
       return res.status(400).json({ error: destinationError});
     }
 
     if(numberError) {
-      console.log(numberError);
       return res.status(400).json({ error: numberError });
     }
 
