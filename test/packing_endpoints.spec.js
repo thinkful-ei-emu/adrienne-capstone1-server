@@ -80,16 +80,81 @@ describe('Packing Endpoints', () => {
         .expect(res => {
           expect(res.body.item).to.eql(newItem.item);
           expect(res.body).to.have.property('id');
-        })
-        .then(postRes => {
-          supertest(app)
-            .get('/api/list')
-            .expect(postRes.body);
+          expect(res.body).to.have.property('user_id');
+          expect(res.body).to.have.property('date_created');
         });
+        // .then(postRes => {
+        //   supertest(app)
+        //     .get('/api/list')
+        //     .expect(postRes.body);
+        // });
     });
   });
 
-  describe.skip('DELETE /api/list/:id');
+  describe('DELETE /api/list/:id', () => {
+    context('Given items', () => {
+      beforeEach('insert items', () => 
+        helpers.seedPackingTable(
+          db,
+          testUsers,
+          testPackingItems
+        )
+      );
 
-  describe.skip('PATCH /api/list/:id');
+      it('responds with 204 and removes the item', () => {
+        const idToRemove = 1;
+        const expectedItems = testPackingItems.filter(item => item.id !== idToRemove && item.user_id === 0);
+        return supertest(app)
+          .delete(`/api/list/${idToRemove}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .expect(204)
+          .then(res => 
+            supertest(app)
+              .get('/api/list')
+              .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+              .then(res => {
+                expect(res.body).to.have.all.members(expectedItems);
+              })
+          );
+      });
+
+      it('responds with 204 and does not delete item of another user', () => {
+        const idToRemove = 1;
+        const expectedItems = testPackingItems.filter(item => item.user_id === 2);
+        return supertest(app)
+          .delete(`/api/list/${idToRemove}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .expect(204)
+          .then(res => 
+            supertest(app)
+              .get('/api/list')
+              .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+              .expect(expectedItems)
+          );
+      });
+    });
+  });
+
+  describe('PATCH /api/list/:id', () => {
+    context('Given items', () => {
+      beforeEach('insert items', () => 
+        helpers.seedPackingTable(
+          db,
+          testUsers,
+          testPackingItems
+        )
+      );
+      it('responds with 204 and updates the item', () => {
+        const idToUpdate = 1;
+        const updatedItem = {
+          item: 'updated item'
+        };
+        return supertest(app)
+          .patch(`/api/list/${idToUpdate}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .send(updatedItem)
+          .expect(204);
+      });
+    });
+  });
 });

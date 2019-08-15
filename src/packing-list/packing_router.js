@@ -9,7 +9,9 @@ const jsonBodyParser = express.json();
 
 const serializeItem = item => ({
   id: item.id,
-  item: xss(item.item)
+  user_id: item.user_id,
+  item: xss(item.item),
+  date_created: item.date_created
 });
 
 packingRouter

@@ -6,12 +6,14 @@ const requireAuth = require('../middleware/jwt_auth');
 
 const serializeItem = item => ({
   id: item.id,
+  user_id: item.user_id,
   transport_date: xss(item.transport_date),
   transport_time: xss(item.transport_time),
   transport_location: xss(item.transport_location),
   destination: xss(item.destination),
   transport_type: xss(item.transport_type),
-  transport_number: xss(item.transport_number)
+  transport_number: xss(item.transport_number),
+  date_created: item.date_created
 });
 
 const transportationRouter = express.Router();
@@ -69,6 +71,7 @@ transportationRouter
       req.user.id
     )
       .then(numRowsAffected => {
+        console.log('num rows affected', numRowsAffected);
         res.status(204).end();
       })
       .catch(next);
