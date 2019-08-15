@@ -36,6 +36,9 @@ const UsersService = {
     if(username.startsWith(' ') || username.endsWith(' ')){
       return 'Username must not start or end with empty spaces';
     }
+    if(username.length < 6 || username.length > 20) {
+      return 'Username must be between 6 and 20 characters';
+    }
   },
   hashPassword(password) {
     return bcrypt.hash(password, 12);

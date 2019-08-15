@@ -39,34 +39,34 @@ function makeUsersArray() {
 function makePackingArray(users) {
   return [
     {
+      date_created: '2029-01-22T16:28:32.615Z',
       id: 1,
       user_id: users[0].id,
-      item: 'first item', 
-      date_created: '2029-01-22T16:28:32.615Z'
+      item: 'first item'
     },
     {
+      date_created: '2029-01-22T16:28:32.615Z',
       id: 2,
       user_id: users[1].id,
-      item: 'second item', 
-      date_created: '2029-01-22T16:28:32.615Z'
+      item: 'second item'
     },
     {
+      date_created: '2029-01-22T16:28:32.615Z',
       id: 3,
       user_id: users[2].id,
-      item: 'third item', 
-      date_created: '2029-01-22T16:28:32.615Z'
+      item: 'third item'
     },
     {
+      date_created: '2029-01-22T16:28:32.615Z',
       id: 4,
       user_id: users[3].id,
-      item: 'fourth item', 
-      date_created: '2029-01-22T16:28:32.615Z'
+      item: 'fourth item'
     },
     {
+      date_created: '2029-01-22T16:28:32.615Z',
       id: 5,
       user_id: users[4].id,
-      item: 'fifth item', 
-      date_created: '2029-01-22T16:28:32.615Z'
+      item: 'fifth item'
     }
   ];
 }
@@ -135,14 +135,9 @@ function makeExpectedPackingItem(users, packingItem) {
   const user = users.find(user => user.id === packingItem.user_id);
   return {
     id: packingItem.id,
+    user_id: user.id,
     item: packingItem.item,
-    date_created: packingItem.date_created,
-    user: {
-      id: user.id,
-      username: user.username,
-      password: user.password,
-      date_created: user.date_created
-    }
+    date_created: packingItem.date_created
   };
 }
 
@@ -150,19 +145,14 @@ function makeExpectedTransportItem(users, transportItem) {
   const user = users.find(user => user.id === transportItem.user_id);
   return {
     id: transportItem.id,
+    user_id: user.id,
     transport_date: transportItem.transport_date,
     transport_time: transportItem.transport_time,
     transport_location: transportItem.transport_location,
     destination: transportItem.destination,
     transport_type: transportItem.transport_type,
     transport_number: transportItem.transport_number,
-    date_created: transportItem.date_created,
-    user: {
-      id: user.id,
-      username: user.username,
-      password: user.password,
-      date_created: user.date_created
-    }
+    date_created: transportItem.date_created
   };
 }
 
@@ -208,7 +198,7 @@ function makeMaliciousPackingItem(user) {
 }
 
 function makeAuthHeader(user, secret=process.env.JWT_SECRET) {
-  const token = jwt.sign({ user_id: user.id}, secret, {
+  const token = jwt.sign({ id: user.id}, secret, {
     subject: user.username,
     algorithm: 'HS256'
   });
@@ -258,7 +248,7 @@ function seedUsers(db, users) {
     )
 }
 
-function seedTravelTables(db, users, packingList, transportList) {
+function seedPackingTable(db, users, packingList) {
   return db.transaction(async trx => {
     await seedUsers(trx, users)
     await trx.into('packing_list').insert(packingList)
@@ -266,6 +256,12 @@ function seedTravelTables(db, users, packingList, transportList) {
       `SELECT setval('packing_list_id_seq', ?)`,
       [packingList[packingList.length - 1].id]
     )
+  })
+}
+
+function seedTransportTable(db, users, transportList) {
+  return db.transaction(async trx => {
+    await seedUsers(trx, users)
     await trx.into('transportation').insert(transportList)
     await trx.raw(
       `SELECT setval('transportation_id_seq', ?)`,
@@ -297,13 +293,15 @@ module.exports = {
   makePackingArray,
   makeTransportationArray,
   makeExpectedPackingItem,
+  makeExpectedTransportItem,
   makeMaliciousTransportItem,
   makeMaliciousPackingItem,
   makeAuthHeader,
   makeTravelFixtures,
   cleanTables,
   seedUsers,
-  seedTravelTables,
+  seedPackingTable,
+  seedTransportTable,
   seedMaliciousPackingItem,
   seedMaliciousTransportItem
 };

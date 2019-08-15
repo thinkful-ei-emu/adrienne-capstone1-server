@@ -143,7 +143,6 @@ describe('Users Endpoints', () => {
         password: '11AAaa!!'
       };
       const date = new Date();
-      console.log('date', date);
       return supertest(app)
         .post('/api/users')
         .send(newUser)
@@ -153,10 +152,8 @@ describe('Users Endpoints', () => {
           expect(res.body.username).to.eql(newUser.username);
           expect(res.body).to.not.have.property('password');
           expect(res.headers.location).to.eql(`/api/users/${res.body.id}`);
-          const expectedDate = new Date();//.toLocaleString('en', { timeZone: 'UTC' });
-          console.log('expected date', expectedDate);
-          const actualDate = new Date(res.body.date_created);//.toLocaleString('en', { timeZone: 'UTC' });
-          console.log('actual date', actualDate);
+          const expectedDate = new Date();
+          const actualDate = new Date(res.body.date_created);
           expect(actualDate).to.be.within(date, expectedDate);
         })
         .expect(res => 

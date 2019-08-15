@@ -63,14 +63,14 @@ describe('Auth Endpoints', () => {
         .expect(400, { error: 'Incorrect username or password' });
     });    
 
-    context.skip('Happy path', () => {
+    context('Happy path', () => {
       it('responds 200 and JWT auth token using secret when valid credentials', () => {
         const userValidCreds = {
           username: testUser.username,
           password: testUser.password
         };
         const expectedToken = jwt.sign(
-          { user_id: testUser.id },
+          { id: testUser.id },
           process.env.JWT_SECRET,
           {
             subject: testUser.username,
