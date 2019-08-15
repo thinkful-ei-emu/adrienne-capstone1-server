@@ -28,7 +28,7 @@ const PackingService = {
   },
   validateItem(item) {
     if(item.startsWith(' ') || item.endsWith(' ')) {
-      return 'Item must not start or end with empty spaces';
+      return 'Item input invalid';
     }
   }
 };

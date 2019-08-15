@@ -28,17 +28,17 @@ const TransportationService = {
   },
   validateLocation(transport_location) {
     if(transport_location.startsWith(' ') || transport_location.endsWith(' ')) {
-      return 'Location must not start or end with empty spaces';
+      return 'Location input invalid';
     }
   },
   validateDestination(destination) {
     if(destination.startsWith(' ') || destination.endsWith(' ')) {
-      return 'Destination must not start or end with empty spaces';
+      return 'Destination input invalid';
     }
   },
   validateNumber(transport_number) {
     if(transport_number.startsWith(' ') || transport_number.endsWith(' ')) {
-      return 'Transportation Number must not start or end with empty spaces';
+      return 'Transportation Number input invalid';
     }
   }
 };

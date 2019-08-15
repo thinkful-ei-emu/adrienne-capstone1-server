@@ -25,7 +25,7 @@ const UsersService = {
       return 'Password must be less than 72 characters';
     }
     if(password.startsWith(' ') || password.endsWith(' ')) {
-      return 'Password must not start or end with empty spaces';
+      return 'Password input invalid';
     }
     if(!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
       return 'Password must contain 1 upper case, lower case, number, and special character';
@@ -34,9 +34,9 @@ const UsersService = {
   },
   validateUsername(username) {
     if(username.startsWith(' ') || username.endsWith(' ')){
-      return 'Username must not start or end with empty spaces';
+      return 'Username input invalid';
     }
-    if(username.length < 6 || username.length > 20) {
+    if(username.length < 1 || username.length > 20) {
       return 'Username must be between 6 and 20 characters';
     }
   },
