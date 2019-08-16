@@ -1,8 +1,7 @@
 # Travel Companion Server
 
-## Set up
-Clone this repository to your local machine  
-Install the node dependencies 
+## Technology
+Node, Express, PostgreSQL, testing with Mocha and Chai
 
 ## Endpoints
 The /api/users endpoint is used for registering new users  
