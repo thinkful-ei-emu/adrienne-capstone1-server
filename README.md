@@ -1,7 +1,7 @@
 # Travel Companion Server
 
 ## Set up
-Clone this repository to your local machine
+Clone this repository to your local machine  
 Install the node dependencies 
 
 ## Endpoints
