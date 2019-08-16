@@ -76,7 +76,7 @@ describe('Users Endpoints', () => {
         return supertest(app)
           .post('/api/users')
           .send(userPasswordStartSpace)
-          .expect(400, { error: 'Password must not start or end with empty spaces' });
+          .expect(400, { error: 'Password input invalid' });
       });
 
       it('responds 400 error when password ends with spaces', () => {
@@ -87,7 +87,7 @@ describe('Users Endpoints', () => {
         return supertest(app)
           .post('/api/users')
           .send(userPasswordEndSpace)
-          .expect(400, { error: 'Password must not start or end with empty spaces' });
+          .expect(400, { error: 'Password input invalid' });
       });
 
       it('responds 400 error when password is not complex enough', () => {
@@ -120,7 +120,7 @@ describe('Users Endpoints', () => {
         return supertest(app)
           .post('/api/users')
           .send(usernameStartSpace)
-          .expect(400, { error: 'Username must not start or end with empty spaces' });
+          .expect(400, { error: 'Username input invalid' });
       });
 
       it('reponds 400 error when username ends with spaces', () => {
@@ -131,7 +131,7 @@ describe('Users Endpoints', () => {
         return supertest(app)
           .post('/api/users')
           .send(usernameEndSpace)
-          .expect(400, { error: 'Username must not start or end with empty spaces' });
+          .expect(400, { error: 'Username input invalid' });
       });
     });
   });

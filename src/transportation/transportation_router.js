@@ -71,7 +71,6 @@ transportationRouter
       req.user.id
     )
       .then(numRowsAffected => {
-        console.log('num rows affected', numRowsAffected);
         res.status(204).end();
       })
       .catch(next);
